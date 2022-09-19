@@ -1,0 +1,115 @@
+body {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  font-family: "Kanit", sans-serif, "Poppins";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+h4 li {
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.footer-col ul li {
+  list-style: none;
+  outline: none;
+}
+
+.footer-col ul li:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.link {
+  font-size: 16px;
+  text-transform: capitalize;
+  font-style: italic;
+  color: black;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.link:hover {
+  background: rgb(97, 93, 93) !important;
+  color: #fff !important;
+  position: relative;
+  border-radius: 5px;
+}
+
+.footer {
+  background: #f7f3f3;
+  /* display: flex; */
+  position: sticky;
+  top: 100%;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  line-height: 1.5;
+}
+
+.footer-col {
+  width: 25%;
+  padding: 0 15px;
+}
+
+.footer-col h4 {
+  font-size: 20px;
+  color: black;
+  font-weight: bold;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  font-family: "Kanit", sans-serif, "Poppins";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.social_link i {
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+  margin: 0 6px;
+  background-color: rgba(255, 255, 255, 0.2);
+  text-align: center;
+  line-height: 40px;
+  border-radius: 50%;
+  color: black;
+  transition: all 0.3 ease;
+}
+
+.social_link i:hover {
+  background: rgb(101, 103, 131) !important;
+  color: #fff !important;
+  position: relative;
+}
+
+@media (max-width: 600px) {
+  .row {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    /* justify-content: center; */
+    align-items: center;
+  }
+  .social_link i {
+    display: flex;
+    /* height: 40px;
+    width: 40px;
+    margin: 0 6px;
+    background-color: rgba(255, 255, 255, 0.2);
+    text-align: center;
+    line-height: 40px;
+    border-radius: 50%;
+    color: #fff; */
+    transition: all 0.3 ease;
+  }
+  .link {
+    display: flex;
+  }
+}
