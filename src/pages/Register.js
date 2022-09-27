@@ -101,6 +101,7 @@ const Auth = (props) => {
       ).then((res) => {
         saveTokenLocalStorage(res._tokenResponse);
         runLogoutTimer(res._tokenResponse.expiresIn * 1000);
+        navigate("/");
       });
       const user = res.user;
       const q = query(collection(db, "users"), where("uid", "==", user.uid));
