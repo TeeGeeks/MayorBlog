@@ -93,7 +93,7 @@ const Header = (props) => {
                             src={
                               props.user
                                 ? props.user?.photoURL
-                                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1jW7pO1GyW_6mKaC4-ZEqGUytMhW9TeZXEOX9lvDdSA&s"
+                                : "https://www.kindpng.com/picc/m/22-223863_no-avater-png-cirlce-transparent-png.png"
                             }
                             style={{
                               width: "30px",
