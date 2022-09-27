@@ -13,6 +13,7 @@ const Settings = ({ user }) => {
   const [lastName, setLastName] = useState("");
   const [photoURL, setPhotoUrl] = useState(null);
   const [file, setFile] = useState(null);
+  const [progress, setProgress] = useState(0);
 
   const navigate = useNavigate();
 
@@ -31,7 +32,7 @@ const Settings = ({ user }) => {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          // setProgress(progress);
+          setProgress(progress);
           switch (snapshot.status) {
             case "paused":
               console.log("upload is paused");
@@ -108,6 +109,16 @@ const Settings = ({ user }) => {
                 className="form-control"
                 onChange={(e) => setFile(e.target.files[0])}
               />
+              {progress === 0 ? null : (
+                <div className="progress">
+                  <div
+                    className="progress-bar progress-bar-striped mt-1"
+                    style={{ width: `${progress}% ` }}
+                  >
+                    Uploaded {progress} %
+                  </div>
+                </div>
+              )}
             </div>
             <div className="col-12 py-3">
               <input
@@ -134,6 +145,7 @@ const Settings = ({ user }) => {
               className="btn btn-add col-12 py-3 text-center"
               onClick={submitHandler}
               type="submit"
+              disabled={progress !== null && progress < 100}
             >
               Update
             </button>

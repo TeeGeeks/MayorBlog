@@ -194,6 +194,16 @@ const Auth = (props) => {
                   setFile(e.target.files[0]);
                 }}
               />
+              {progress === 0 ? null : (
+                <div className="progress">
+                  <div
+                    className="progress-bar progress-bar-striped mt-1"
+                    style={{ width: `${progress}% ` }}
+                  >
+                    Uploaded {progress} %
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="col-12 py-3 text-center">
