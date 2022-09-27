@@ -13,6 +13,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+// import { ProgressBar } from "react-toastify/dist/components";
 import { db, storage } from "../firebase/firebase";
 
 const initialState = {
@@ -34,7 +35,7 @@ const categoryOptions = [
 const AddEditBlog = (props) => {
   const [form, setForm] = useState(initialState);
   const [file, setFile] = useState(null);
-  const [progression, setProgression] = useState(null);
+  const [progression, setProgression] = useState(0);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -42,14 +43,19 @@ const AddEditBlog = (props) => {
 
   useEffect(() => {
     const uploadFile = () => {
+      if (!file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+        toast.error("Image format must be jpg/jpeg/png/gif");
+        return false;
+      }
       const storageRef = ref(storage, file.name);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
           console.log("Upload is " + progress + " done");
           setProgression(progress);
           switch (snapshot.state) {
@@ -113,6 +119,10 @@ const AddEditBlog = (props) => {
 
   const formHandler = async (e) => {
     e.preventDefault();
+    if (!file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+      toast.error("Image format must be jpg/jpeg/png/gif");
+      return false;
+    }
     if (category && tags && title && description && trending) {
       if (!id) {
         try {
@@ -121,6 +131,8 @@ const AddEditBlog = (props) => {
             timestamp: serverTimestamp(),
             author: props.user.displayName,
             userId: props.user.uid,
+            comments: [],
+            likes: [],
           });
           toast.success("Blog created successfully!");
         } catch (e) {
@@ -234,6 +246,16 @@ const AddEditBlog = (props) => {
                     setFile(e.target.files[0]);
                   }}
                 />
+                {progression === 0 ? null : (
+                  <div className="progress">
+                    <div
+                      className="progress-bar progress-bar-striped mt-1"
+                      style={{ width: `${progression}% ` }}
+                    >
+                      Uploaded {progression} %
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="col-12 py-3 text-center">
                 <button

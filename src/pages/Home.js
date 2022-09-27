@@ -21,19 +21,19 @@ const Home = (props) => {
   const [loading, setLoading] = useState(true);
   const [blogs, setBlog] = useState([]);
   const [tags, setTags] = useState([]);
-  const [setTrendBlogs] = useState([]);
+  // const [trendingBlog, setTrendBlogs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
 
   const getTrendingBlogs = async () => {
     const blogRef = collection(db, "blogs");
-    const trendQuery = query(blogRef, where("trending", "**", "yes"));
+    const trendQuery = query(blogRef, where("trending", "==", "yes"));
     const querySnapshot = await getDocs(trendQuery);
     let trendBlogs = [];
     querySnapshot.forEach((doc) => {
       trendBlogs.push({ id: doc.id, ...doc.data });
     });
-    setTrendBlogs(trendBlogs);
+    // setTrendBlogs(trendBlogs);
   };
 
   useEffect(() => {
@@ -81,7 +81,7 @@ const Home = (props) => {
     }
   };
 
-  console.log("blogs", blogs);
+  // console.log("blogs", blogs);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;

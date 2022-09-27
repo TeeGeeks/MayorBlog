@@ -1,0 +1,46 @@
+.main-footer {
+  color: grey;
+  background-color: #f7f3f3;
+  padding-top: 3em;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+h4 {
+  font-weight: bolder;
+}
+
+.link {
+  font-size: 16px;
+  text-transform: capitalize;
+  font-style: italic;
+  color: grey;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.link:hover {
+  background: rgb(101, 103, 131) !important;
+  color: #fff !important;
+  position: relative;
+  border-radius: 5px;
+}
+
+.social_link i {
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+  margin: 3px 6px;
+  background-color: rgba(255, 255, 255, 0.2);
+  text-align: center;
+  line-height: 40px;
+  border-radius: 50%;
+  color: black;
+  transition: all 0.3 ease;
+}
+
+.social_link i:hover {
+  background: rgb(101, 103, 131) !important;
+  color: #fff !important;
+  position: relative;
+}

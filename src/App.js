@@ -27,12 +27,7 @@ import ResetPassword from "./pages/ResetPassword";
 function App() {
   const [active, setActive] = useState("home");
   const [user, setUser] = useState(null);
-  const [imgUrl, setImgUrl] = useState([]);
   const navigate = useNavigate();
-
-  const img = (img) => {
-    setImgUrl(img);
-  };
 
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
@@ -47,6 +42,7 @@ function App() {
   const logoutHandler = () => {
     signOut(auth)
       .then(() => {
+        localStorage.removeItem("userDetails");
         setUser(null);
         setActive("login");
         navigate("/login");
@@ -55,58 +51,75 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Header
-        setActive={setActive}
-        active={active}
-        handleChangeLogout={logoutHandler}
-        user={user}
-        img={imgUrl}
-      />
-      <ToastContainer />
-      <Routes>
-        <Route path="/" element={<Home setActive={setActive} user={user} />} />
-        <Route
-          path="/forgotPassword"
-          element={<ForgotPassword user={user} />}
+    <div className="App page-container">
+      <div className="content-wrap">
+        <Header
+          setActive={setActive}
+          active={active}
+          handleChangeLogout={logoutHandler}
+          user={user}
         />
-        <Route path="/detail/:id" element={<Detail setActive={setActive} />} />
-        <Route
-          path="/settings"
-          element={
-            user?.uid ? (
-              <Settings user={user} onImg={img} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-        <Route
-          path="/write"
-          element={
-            user?.uid ? <AddEditBlog user={user} /> : <Navigate to="/login" />
-          }
-        />
-        <Route path="/resetPassword" element={<ResetPassword user={user} />} />
-        <Route
-          path="/update/:id"
-          element={
-            user?.uid ? (
-              <AddEditBlog user={user} setActive={setActive} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route
-          path="/register"
-          element={<Register user={user} setActive={setActive} />}
-        />
-        <Route path="/login" element={<Login setActive={setActive} />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+        <ToastContainer />
+        <Routes>
+          <Route
+            path="/"
+            element={<Home setActive={setActive} user={user} />}
+          />
+          <Route
+            path="/forgotPassword"
+            element={<ForgotPassword user={user} />}
+          />
+          <Route
+            path="/detail/:id"
+            element={<Detail setActive={setActive} user={user} />}
+          />
+          <Route
+            path="/settings"
+            element={
+              user?.uid ? <Settings user={user} /> : <Navigate to="/login" />
+            }
+          />
+          <Route
+            path="/write"
+            element={
+              user?.uid ? <AddEditBlog user={user} /> : <Navigate to="/login" />
+            }
+          />
+          <Route
+            path="/resetPassword"
+            element={<ResetPassword user={user} />}
+          />
+          <Route
+            path="/update/:id"
+            element={
+              user?.uid ? (
+                <AddEditBlog user={user} setActive={setActive} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route
+            path="/register"
+            element={
+              <Register
+                user={user}
+                logoutHandler={logoutHandler}
+                setActive={setActive}
+              />
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <Login logoutHandler={logoutHandler} setActive={setActive} />
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
       <Footer />
     </div>
   );

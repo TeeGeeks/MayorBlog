@@ -1,11 +1,21 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  snapshotEqual,
+} from "firebase/firestore";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import CommentsSection from "../components/CommentsSection";
+import LikeBlog from "../components/LikeBlog";
 import MostPopular from "../components/MostPopular";
 import Tags from "../components/Tags";
 import { db } from "../firebase/firebase";
+import Comments from "./Comment";
 
 const Detail = (props) => {
   const [blog, setBlog] = useState();
@@ -27,15 +37,12 @@ const Detail = (props) => {
   }, []);
 
   useEffect(() => {
-    id && getBlogDetail();
+    const docRef = doc(db, "blogs", id);
+    onSnapshot(docRef, (snapShot) => {
+      setBlog({ ...snapShot.data(), id: snapShot.id });
+    });
   }, [id]);
 
-  const getBlogDetail = async () => {
-    const docRef = doc(db, "blogs", id);
-    const blogDetail = await getDoc(docRef);
-    setBlog(blogDetail.data());
-    props.setActive(null);
-  };
   return (
     <div className="single">
       <div
@@ -56,12 +63,23 @@ const Detail = (props) => {
                 By <p className="author">{blog?.author}</p> -&nbsp;
                 {blog?.timestamp.toDate().toDateString()}
               </span>
-              <p className="text-start">{blog?.description}</p>
+              <p className="text-start blog-text">{blog?.description}</p>
             </div>
             <div className="col-md-3">
               <Tags tags={tags} />
               <MostPopular blogs={blogs} />
             </div>
+          </div>
+
+          <Comments user={props.user} id={blog?.id} blog={blogs} />
+          <div className="">
+            <CommentsSection
+              blog={blog}
+              blogs={blogs}
+              user={props.user}
+              id={blog?.id}
+            />
+            {/* {JSON.stringify(blog?.comments)} */}
           </div>
         </div>
       </div>

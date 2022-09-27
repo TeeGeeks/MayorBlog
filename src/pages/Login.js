@@ -12,6 +12,12 @@ const Auth = (props) => {
   // const [isLoading, setIsLoading] = useState();
   const navigate = useNavigate();
 
+  const runLogoutTimer = (timer, dispatch) => {
+    setTimeout(() => {
+      dispatch(props.logoutHandler());
+    }, timer);
+  };
+
   const handleAuthHandler = async (e) => {
     e.preventDefault();
     if (!email || !password) {
@@ -20,11 +26,17 @@ const Auth = (props) => {
     setIsSubmitting(true);
     login(email, password)
       .then((res) => {
+        saveTokenLocalStorage(res._tokenResponse);
+        runLogoutTimer(res._tokenResponse.expiresIn * 1000);
         console.log(res);
         navigate("/");
       })
       .catch((err) => {
-        toast.error(err.message);
+        if (!props.user) {
+          toast.error("user not found!!!", err.message);
+        } else {
+          toast.error(err.message);
+        }
       })
       .finally(() => {
         setIsSubmitting(false);
@@ -78,7 +90,7 @@ const Auth = (props) => {
             <div className="text-center justify-content-center mt-2 pt-2">
               <p className="small fw-bold mt-2 pt-1 mb-0">
                 Forgot Password?&nbsp;
-                <Link to="/forgotPassword">
+                <Link to="/forgotPassword" style={{ textDecoration: "none" }}>
                   <span
                     className="link-danger"
                     style={{ textDecoration: "none", cursor: "pointer" }}
@@ -90,7 +102,7 @@ const Auth = (props) => {
               </p>
               <p className="small fw-bold mt-2 pt-1 mb-0">
                 Don't have an account ?&nbsp;
-                <Link to="/register">
+                <Link to="/register" style={{ textDecoration: "none" }}>
                   <span
                     className="link-danger"
                     style={{ textDecoration: "none", cursor: "pointer" }}
@@ -109,3 +121,7 @@ const Auth = (props) => {
 };
 
 export default Auth;
+
+export const saveTokenLocalStorage = (tokenData) => {
+  localStorage.setItem("userDetails", JSON.stringify(tokenData));
+};

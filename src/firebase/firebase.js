@@ -48,7 +48,7 @@ export async function upload(file, currentUser, setLoading) {
 
 export function forgotPassword(email) {
   return sendPasswordResetEmail(auth, email, {
-    url: "http://localhost:3000/auth",
+    url: "https://mayorblog-e07bf.web.app/login",
   });
 }
 

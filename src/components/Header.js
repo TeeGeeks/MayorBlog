@@ -2,24 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import transitions from "bootstrap";
 import ProfileImage from "../pages/ProfileImage";
-import { getDownloadURL, ref } from "firebase/storage";
-import { storage } from "../firebase/firebase";
 
 const Header = (props) => {
   const userId = props.user?.uid;
-  const [img, setImg] = useState([]);
-  useEffect(() => {
-    const getImg = async () => {
-      const ImageURL = await getDownloadURL(ref(storage, "profilePicture"));
-      setImg(ImageURL);
-    };
-    getImg();
-  }, []);
-
-  console.log(img);
 
   return (
-    <nav className="navbar navbar-expand-sm navbar-light bg-light">
+    <nav className=" navbar navbar-expand-sm navbar-light bg-light">
       <div className="container-fluid bg-faded padding-media">
         <div className="container padding-media">
           <nav className="navbar navbar-toggleable-md navbar-light">
@@ -102,15 +90,21 @@ const Header = (props) => {
                       <div className="">
                         <Link to="/settings">
                           <ProfileImage
-                            src={props.img}
+                            src={
+                              props.user
+                                ? props.user?.photoURL
+                                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1jW7pO1GyW_6mKaC4-ZEqGUytMhW9TeZXEOX9lvDdSA&s"
+                            }
                             style={{
                               width: "30px",
                               height: "30px",
                               borderRadius: "50%",
                               marginTop: "12px",
                             }}
+                            user={props.user}
                           />
                         </Link>
+                        Welcome
                       </div>
                       <p
                         style={{
