@@ -94,33 +94,23 @@ const Auth = (props) => {
     setIsSubmitting(true);
 
     try {
-      const res = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      ).then((res) => {
-        saveTokenLocalStorage(res._tokenResponse);
-        runLogoutTimer(res._tokenResponse.expiresIn * 1000);
-        navigate("/");
-      });
-      const user = res.user;
-      const q = query(collection(db, "users"), where("uid", "==", user.uid));
-      const docs = await getDocs(q);
+      const res = await createUserWithEmailAndPassword(auth, email, password)
+        .then((res) => {
+          saveTokenLocalStorage(res._tokenResponse);
+          runLogoutTimer(res._tokenResponse.expiresIn * 100);
+          toast.success("Credentials submitted successfully!");
+          navigate("/");
+        })
+        .catch((e) => {
+          toast.error(e.message);
+        });
       await updateProfile(auth.currentUser, {
         displayName: `${firstName} ${lastName}`,
         photoURL: photo,
       });
-      if (docs.docs.length === 0) {
-        await addDoc(collection(db, "users"), {
-          uid: user.uid,
-          name: user.displayName,
-          authProvider: "google",
-          email: user.email,
-          photoURL: user.photoURL,
-        });
-      }
-      toast.success("Credentials submitted successfully!");
-      navigate("/");
+      const user = res.user;
+      const q = query(collection(db, "users"), where("uid", "==", user.uid));
+      const docs = await getDocs(q);
     } catch (err) {
       toast.error(e.message);
     }

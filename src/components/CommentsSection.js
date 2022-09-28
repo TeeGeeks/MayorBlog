@@ -13,6 +13,7 @@ const CommentsSection = ({ blog, user, id, blogs }) => {
         <div className="col-md-4 col-md-4 col-lg-6">
           <hr />
           <span style={{ fontWeight: "bold" }}> Comments</span>
+
           {blog?.comments.map((comment, index) => (
             <div
               key={index * 9999}

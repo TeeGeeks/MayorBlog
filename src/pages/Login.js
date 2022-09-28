@@ -27,8 +27,8 @@ const Auth = (props) => {
     login(email, password)
       .then((res) => {
         saveTokenLocalStorage(res._tokenResponse);
-        runLogoutTimer(res._tokenResponse.expiresIn * 1000);
-        console.log(res);
+        runLogoutTimer(res._tokenResponse.expiresIn * 100);
+        // console.log(res._tokenResponse.expiresIn);
         navigate("/");
       })
       .catch((err) => {
